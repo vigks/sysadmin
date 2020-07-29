@@ -4,15 +4,15 @@
             <div>
                 <img src="../../assets/images/login-title.png" alt="浙江友联智慧管理系统" class="login-title">
             </div>
-            <el-form :model="loginForm" class="form-bg">
+            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="form-bg">
                 <h1>欢迎登录</h1>
-                <el-form-item class="self-input-filed">
-                    <el-input v-model="loginForm.username" placeholder="请输入您的用户名">
+                <el-form-item class="self-input-filed" prop="username">
+                    <el-input v-model="loginForm.username" placeholder="请输入您的用户名" type="text">
                         <i slot="prefix" class="login-icon user-icon"></i>
                     </el-input>
                 </el-form-item>
-                <el-form-item class="self-input-filed">
-                    <el-input v-model="loginForm.password" placeholder="请输入您的密码">
+                <el-form-item class="self-input-filed" prop="password">
+                    <el-input v-model="loginForm.password" placeholder="请输入您的密码" type="password" @keyup.enter.native="doLogin">
                         <i slot="prefix" class="login-icon password-icon"></i>
                     </el-input>
                 </el-form-item>
@@ -21,7 +21,7 @@
                     <span @click="$message.error('联系管理员');" class="forget">忘记密码?</span>
                 </div>
                 <div>
-                    <img src="../../assets/images/Login_btn.png" alt="登录" class="login-btn">
+                    <img src="../../assets/images/Login_btn.png" alt="登录" class="login-btn" @click="doLogin">
                 </div>
             </el-form>
         </div>
@@ -29,16 +29,48 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
     export default {
         name: 'Login',
         data(){
+            const validateUsername = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请输入用户名'))
+                } else {
+                    callback()
+                }
+            }
+            const validatePassword = (rule, value, callback) => {
+                if (value.length < 6) {
+                    callback(new Error('请输入大于5位字符的密码'))
+                } else {
+                    callback()
+                }
+            }
+
             return {
                 loginForm: {
                     username: '',
                     password: ''
                 },
-                remember: false
+                remember: false,
+                loginRules: {
+                    username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+                    password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+                }
             }
+        },
+        methods: {
+            doLogin() {
+                this.$refs.loginForm.validate(valid => {
+                    if (valid) {
+                        this.userLogin(this.loginForm)
+                    }
+                })
+            },
+            ...mapActions({
+                userLogin: 'user/login'
+            })
         }
     }
 </script>
