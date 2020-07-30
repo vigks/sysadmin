@@ -23,6 +23,7 @@
                 <div>
                     <img src="../../assets/images/Login_btn.png" alt="登录" class="login-btn" @click="doLogin">
                 </div>
+                {{userInfo}}
             </el-form>
         </div>
     </div>
@@ -32,11 +33,11 @@
     import {mapActions,mapState} from 'vuex'
     export default {
         name: 'Login',
-        // computed: {
-        //     ...mapState({
-        //         userInfo: state => state.user.userInfo
-        //     })
-        // },
+        computed: {
+            ...mapState({
+                userInfo: state => state.user.userInfo
+            })
+        },
         data(){
             const validateUsername = (rule, value, callback) => {
                 if (!value) {
