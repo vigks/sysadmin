@@ -29,9 +29,14 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions,mapState} from 'vuex'
     export default {
         name: 'Login',
+        // computed: {
+        //     ...mapState({
+        //         userInfo: state => state.user.userInfo
+        //     })
+        // },
         data(){
             const validateUsername = (rule, value, callback) => {
                 if (!value) {
@@ -41,8 +46,8 @@
                 }
             }
             const validatePassword = (rule, value, callback) => {
-                if (value.length < 6) {
-                    callback(new Error('请输入大于5位字符的密码'))
+                if (value.length < 4) {
+                    callback(new Error('请输入大于3位字符的密码'))
                 } else {
                     callback()
                 }

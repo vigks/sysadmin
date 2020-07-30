@@ -1,9 +1,10 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getUserInfo, setUserInfo } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import * as Const from '../const.js'
 
 const state = {
-  token: getToken(),
+  userInfo: getUserInfo(),
   name: '',
   avatar: '',
   introduction: '',
@@ -11,8 +12,8 @@ const state = {
 }
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token
+  [Const.SET_USER_INFO]: (state, playload) => {
+    state.userInfo = playload
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -32,7 +33,9 @@ const actions = {
   // user login
   async login({ commit }, userInfo) {
     const { username, password } = userInfo
-    await login({ username: username.trim(), password: password })
+    const data = await login({ username: username.trim(), password: password })
+    commit(Const.SET_USER_INFO, data.user)
+    setUserInfo(data.user)
   },
 
   // get user info
