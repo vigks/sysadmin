@@ -8,25 +8,25 @@
                     </div>
                     <div class="menu">
                         <el-dropdown>
-                    <span class="el-dropdown-link">
-                        园区概览<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>
-                                    人员管理
-                                </el-dropdown-item>
-                                <el-dropdown-item>
-                                    区域管理
-                                </el-dropdown-item>
-                                <el-dropdown-item>
-                                    设备管理
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
+                            <span class="el-dropdown-link">
+                                园区概览<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item>
+                                            人员管理
+                                        </el-dropdown-item>
+                                        <el-dropdown-item>
+                                            区域管理
+                                        </el-dropdown-item>
+                                        <el-dropdown-item>
+                                            设备管理
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
                         </el-dropdown>
                         <el-dropdown>
-                    <span class="el-dropdown-link">
-                        基础管理<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
+                            <span class="el-dropdown-link">
+                                基础管理<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item>
                                     人员管理
@@ -47,7 +47,11 @@
                 </div>
             </el-header>
             <el-main>
-
+                <transition name="fade-transform" mode="out-in">
+                    <keep-alive :include="cachedViews">
+                        <router-view :key="key" />
+                    </keep-alive>
+                </transition>
             </el-main>
         </el-container>
     </div>
@@ -55,7 +59,17 @@
 
 <script>
     export default {
-        name: 'Layout'
+        name: 'Layout',
+        data() {
+            return {
+                cachedViews: []
+            }
+        },
+        computed: {
+            key() {
+                return this.$route.path
+            }
+        }
     }
 </script>
 
