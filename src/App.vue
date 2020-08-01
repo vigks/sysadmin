@@ -11,4 +11,7 @@
 </script>
 
 <style>
+    .page-content{
+        padding: 20px 15px;
+    }
 </style>
