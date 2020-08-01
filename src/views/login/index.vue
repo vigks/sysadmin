@@ -68,9 +68,10 @@
         },
         methods: {
             doLogin() {
-                this.$refs.loginForm.validate(valid => {
+                this.$refs.loginForm.validate(async valid => {
                     if (valid) {
-                        this.userLogin(this.loginForm)
+                        await this.userLogin(this.loginForm)
+                        this.$router.push({ path: '/'})
                     }
                 })
             },

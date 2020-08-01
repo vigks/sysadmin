@@ -1,99 +1,107 @@
 <template>
-    <div :class="classObj" class="app-wrapper">
-        <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-        <sidebar class="sidebar-container" />
-        <div :class="{hasTagsView:needTagsView}" class="main-container">
-            <div :class="{'fixed-header':fixedHeader}">
-                <navbar />
-                <tags-view v-if="needTagsView" />
-            </div>
-            <app-main />
-            <right-panel v-if="showSettings">
-                <settings />
-            </right-panel>
-        </div>
+    <div class="app-container">
+        <el-container>
+            <el-header class="header">
+                <div class="menu-wrapper">
+                    <div class="logo">
+                        <img src="../assets/logo.png" alt="">
+                    </div>
+                    <div class="menu">
+                        <el-dropdown>
+                    <span class="el-dropdown-link">
+                        园区概览<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    人员管理
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    区域管理
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    设备管理
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <el-dropdown>
+                    <span class="el-dropdown-link">
+                        基础管理<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    人员管理
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    区域管理
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    设备管理
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+                </div>
+                <div class="avatar">
+                    <img src="../assets/images/user-icon-normat.png" alt="">
+                    退出
+                </div>
+            </el-header>
+            <el-main>
+
+            </el-main>
+        </el-container>
     </div>
 </template>
 
 <script>
-    import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
-    // import ResizeMixin from './mixin/ResizeHandler'
-    import { mapState } from 'vuex'
-
     export default {
-        name: 'Layout',
-        components: {
-            AppMain,
-            Navbar,
-            Settings,
-            Sidebar,
-            TagsView
-        },
-        computed: {
-            ...mapState({
-                sidebar: state => state.app.sidebar,
-                device: state => state.app.device,
-                showSettings: state => state.settings.showSettings,
-                needTagsView: state => state.settings.tagsView,
-                fixedHeader: state => state.settings.fixedHeader
-            }),
-            classObj() {
-                return {
-                    hideSidebar: !this.sidebar.opened,
-                    openSidebar: this.sidebar.opened,
-                    withoutAnimation: this.sidebar.withoutAnimation,
-                    mobile: this.device === 'mobile'
-                }
-            }
-        },
-        methods: {
-            handleClickOutside() {
-                this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-            }
-        }
+        name: 'Layout'
     }
 </script>
 
 <style lang="scss" scoped>
-    @import "../styles/mixin.scss";
-    @import "../styles/variables.scss";
-
-    .app-wrapper {
-        @include clearfix;
-        position: relative;
-        height: 100%;
-        width: 100%;
-
-        &.mobile.openSidebar {
-            position: fixed;
-            top: 0;
+.app-container{
+    background: #021557;
+    height: 100vh;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        height: 60px;
+        .menu-wrapper {
+            display: flex;
+        }
+        .logo {
+            width: 300px;
+            display: flex;
+            align-items: center;
+            margin: 0 30px;
+            img{
+                width: 100%;
+                cursor: pointer;
+            }
+        }
+        .menu {
+            min-width: 600px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            .el-dropdown{
+                margin-right: 20px;
+                font-size: 16px;
+                color: #ffffff;
+            }
+        }
+        .avatar {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #ffffff;
+            cursor: pointer;
+            img{
+                width: 25px;
+                margin-right: 10px;
+            }
         }
     }
-
-    .drawer-bg {
-        background: #000;
-        opacity: 0.3;
-        width: 100%;
-        top: 0;
-        height: 100%;
-        position: absolute;
-        z-index: 999;
-    }
-
-    .fixed-header {
-        position: fixed;
-        top: 0;
-        right: 0;
-        z-index: 9;
-        width: calc(100% - #{$sideBarWidth});
-        transition: width 0.28s;
-    }
-
-    .hideSidebar .fixed-header {
-        width: calc(100% - 54px)
-    }
-
-    .mobile .fixed-header {
-        width: 100%;
-    }
+}
 </style>
