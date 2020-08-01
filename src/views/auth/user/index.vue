@@ -12,16 +12,14 @@
         <div class="search-content">
             <div class="input-label">
                 <div class="label-name">角色名称</div>
-                <el-input v-model="queryParams.roleName" placeholder="请输入内容"></el-input>
+                <el-input v-model="queryParams.username" placeholder="请输入内容"></el-input>
             </div>
             <el-button type="primary">查询</el-button>
         </div>
-
         <el-table
                 ref="singleTable"
                 :data="tableData"
                 highlight-current-row
-                @current-change="handleCurrentChange"
                 style="width: 100%">
             <el-table-column
                     type="index"
@@ -41,17 +39,50 @@
                     property="address"
                     label="地址">
             </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.row)">新增</el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.row)">修改</el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
         </el-table>
+        <el-dialog
+                title="提示"
+                :visible.sync="dialogVisible"
+                width="30%">
+                        <span>这是一段信息</span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogVisible = false">保 存</el-button>
+                        </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+    import {mapActions,mapGetters} from 'vuex'
+    import * as Api from '@/api/user'
     export default {
         name: "user",
+        computed: {
+            ...mapGetters({
+                userList: 'user/userList'
+            })
+        },
         data() {
             return {
                 queryParams: {
-                    roleName: ''
+                    username: '',
+                    page: 1,
+                    limit: 10
                 },
                 tableData: [{
                     date: '2016-05-02',
@@ -69,8 +100,39 @@
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1516 弄'
-                }]
+                }],
+                dialogVisible: false
             }
+        },
+        methods: {
+            ...mapActions({
+                getUserList: 'user/getUserList'
+            }),
+            handleEdit(row){
+
+            },
+            handleDelete(row){
+                this.$confirm('确认要删除吗？','提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(async ()=> {
+                    await Api.deleteUser(row)
+                    this.$message.success('删除成功')
+                })
+            },
+            getUser(params) {
+
+            },
+            createUser(params) {
+
+            },
+            updateUser(params){
+
+            }
+        },
+        mounted() {
+            this.getUserList(this.queryParams)
         }
     }
 </script>

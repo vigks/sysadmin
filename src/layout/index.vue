@@ -116,6 +116,9 @@
                 margin-right: 10px;
             }
         }
+        .el-dropdown-link {
+            cursor: pointer;
+        }
     }
 }
 </style>

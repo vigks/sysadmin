@@ -17,4 +17,7 @@
     .btn-group {
         padding: 20px 15px;
     }
+    .search-content {
+        padding-bottom: 20px;
+    }
 </style>
