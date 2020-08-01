@@ -14,4 +14,7 @@
     .page-content{
         padding: 20px 15px;
     }
+    .btn-group {
+        padding: 20px 15px;
+    }
 </style>

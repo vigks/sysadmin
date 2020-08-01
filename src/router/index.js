@@ -68,6 +68,31 @@ export const constantRoutes = [
             }
         ]
     },
+    {
+        path: '/auth',
+        component: Layout,
+        redirect: '/auth/organization',
+        children: [
+            {
+                path: '/auth/organization',
+                component: () => import('@/views/auth/organization/index'),
+                name: 'organization',
+                meta: { title: 'organization' }
+            },
+            {
+                path: '/auth/role',
+                component: () => import('@/views/auth/role/index'),
+                name: 'role',
+                meta: { title: 'role' }
+            },
+            {
+                path: '/auth/user',
+                component: () => import('@/views/auth/user/index'),
+                name: 'user',
+                meta: { title: 'user' }
+            }
+        ]
+    },
     // {
     //     path: '/404',
     //     component: () => import('@/views/error-page/404'),
